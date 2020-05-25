@@ -30,6 +30,30 @@ td {
   border-color: white;
 }
 
+.start {
+  background-color: rgb(90, 123, 224);
+  animation: startAnimation 0.5s ease-out;
+}
+
+.goal {
+  background-color: red;
+  animation: startAnimation 0.5s ease-out;
+}
+
+@keyframes startAnimation {
+  0% {
+    transform: scale(.3);
+  }
+
+  50% {
+    transform: scale(.8);
+  }
+
+  100% {
+    transform: scale(1.0);
+  }
+}
+
 @keyframes wallAnimation {
   0% {
     transform: scale(.3);

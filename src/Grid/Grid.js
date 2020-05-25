@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 
 import Square from './Square/Square';
+import { initializeGrid } from './Helper';
 
 class Grid extends Component {
 	constructor(props) {
 		super(props);
 
-		let grid = new Array(14);
-		for (let i = 0; i < 14; i++)
-			grid[i] = new Array(40).fill('unvisited');
-
 		this.state = {
-			grid: grid,
-			isMouseClicked: false
+			grid: initializeGrid(7, 10, 7, 30, 14, 40),
+			isMouseClicked: false,
+			isSpecialClicked: false,
+			specialType: '' //Moving starting/target square
 		}
 	}
 
@@ -24,7 +23,16 @@ class Grid extends Component {
 
 	onMouseUp = () => {
 		this.setState({
-			isMouseClicked: false
+			isMouseClicked: false,
+			isSpecialClicked: false,
+			specialType: ''
+		});
+	}
+
+	selectSpecial = (type) => {
+		this.setState({
+			isSpecialClicked: true,
+			specialType: type
 		});
 	}
 
@@ -43,6 +51,9 @@ class Grid extends Component {
 														key={rowIdx % 40 + colIdx} 
 														id={rowIdx % 40 + colIdx} 
 														isMouseClicked={this.state.isMouseClicked}
+														isSpecialClicked={this.state.isSpecialClicked}
+														specialType={this.state.specialType}	
+														selectSpecial={this.selectSpecial} 
 														grid={this.state.grid} />
 								})}
 							</tr>
