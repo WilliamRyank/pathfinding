@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
 
 import { START_SQUARE, GOAL_SQUARE, UNVISITED_SQUARE, WALL_SQUARE } from './SquareType';
 
@@ -28,43 +29,73 @@ class Square extends Component {
 					break;
 				case START_SQUARE:
 				case GOAL_SQUARE:
-					if (!this.props.isMouseClicked) this.props.selectSpecial(this.state.currState); //Not allowed to move special squares if currently creating walls
+					if (!this.props.isMouseClicked) { //Not allowed to move special squares if currently creating walls
+						if (event.target.className !== this.state.currState) {
+							this.setState({
+								currState: UNVISITED_SQUARE
+							});
+							break;
+						}
+						this.props.selectSpecial(this.state.currState, this.props.row, this.props.col);
+					} 
 					break;
 				default:
 			}
 		}
 	}
 
-	onMouseOver = () => {
+	onMouseOver = (event) => {
+		if ((event.target.className !== this.state.currState)
+					&& (this.state.currState === GOAL_SQUARE || this.state.currState === START_SQUARE)) { //Preventing unmatched class name with curr state caused by moving special squares
+			if (this.props.specialType) {
+				this.props.moveSpecial(this.props.row, this.props.col);
+				$(event.target).addClass(this.props.specialType);
+			} else {
+				this.setState({
+					currState: event.target.className
+				});
+			}
+		}
+
 		if (this.props.isMouseClicked) {
 			if (this.props.isSpecialClicked && !this.isConflictingSquares(this.props.specialType)) {
-				this.setState({
-					prevState: this.state.currState,
-					currState: this.props.specialType,
-				});
+				if (this.state.currState === GOAL_SQUARE || this.state.currState === START_SQUARE) {
+					this.setState({
+						currState: this.props.specialType,
+						prevState: UNVISITED_SQUARE
+					});
+				} else {
+					this.setState({
+						prevState: this.state.currState,
+						currState: this.props.specialType,
+					});
+					this.props.moveSpecial(this.props.row, this.props.col);
+				}
 			} else {
 				this.onMouseDown();
 			}
 		}
 	}
 
-	onMouseLeave = () => {
-		if (this.props.isSpecialClicked && !this.isConflictingSquares(this.props.specialType)) {
+	onMouseLeave = (event) =>{
+		if (this.props.isSpecialClicked 
+					&& (!this.isConflictingSquares(this.props.specialType))
+					&& (!this.isConflictingSquares(event.relatedTarget.className))) {
 			this.setState({
-				currState: this.state.prevState
+				currState: this.state.prevState,
 			});
-		}
+		}	
 	}
 
 	isConflictingSquares = (state) => {
-		return this.state.currState === GOAL_SQUARE && state === START_SQUARE
-			|| this.state.currState === START_SQUARE && state === GOAL_SQUARE;
+		return (this.state.currState === GOAL_SQUARE && state === START_SQUARE)
+			|| (this.state.currState === START_SQUARE && state === GOAL_SQUARE);
 	}
 
 	componentDidUpdate = () => { //Update the state of this square to the whole grid
 		this.props.grid[this.props.row][this.props.col] = this.state.currState;
 
-		console.log(this.props.grid); //FOR DEBUGGING
+		// console.log(this.props.grid); //FOR DEBUGGING
 	}
 
 	render() {
@@ -72,7 +103,8 @@ class Square extends Component {
 			<td className={this.state.currState} 
 					onMouseDown={this.onMouseDown}
 					onMouseOver={this.onMouseOver}
-					onMouseLeave={this.onMouseLeave} />
+					onMouseLeave={this.onMouseLeave}
+					id={this.props.id} />
 		)
 	}
 }

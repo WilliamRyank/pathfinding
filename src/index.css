@@ -35,6 +35,12 @@ td {
   animation: startAnimation 0.5s ease-out;
 }
 
+.visited {
+  background-color: rgb(204, 243, 97);
+  animation-delay: 0ms;
+  animation: startAnimation 0.5s ease-out;
+}
+
 .goal {
   background-color: red;
   animation: startAnimation 0.5s ease-out;
