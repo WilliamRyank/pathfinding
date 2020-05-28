@@ -5,6 +5,8 @@ import Square from './Square/Square';
 import { initializeGrid } from './Helper';
 import { UNVISITED_SQUARE, VISITED_SQUARE, START_SQUARE } from './Square/SquareType';
 import dfs from '../Algorithm/DFS';
+import bfs from '../Algorithm/BFS';
+
 
 const START_ROW = 7;
 const START_COL = 10;
@@ -77,7 +79,7 @@ class Grid extends Component {
 			isAllowEdit: false,
 		});
 
-		const [delayAnimation, visited] = dfs(ROW_SIZE, COL_SIZE);
+		const [delayAnimation, visited] =  bfs(ROW_SIZE, COL_SIZE);
 
 		setTimeout(() => {
 			this.setState({

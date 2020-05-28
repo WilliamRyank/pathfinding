@@ -67,7 +67,7 @@ td {
   }
 
   50% {
-    transform: scale(.5);
+    transform: scale(.8);
     background-color: rgba(197, 239, 247, 1);
   }
 
