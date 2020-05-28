@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 import { getStartSquare, addVisited } from './common';
-import { GOAL_SQUARE, WALL_SQUARE } from "../Grid/Square/SquareType";
+import { GOAL_SQUARE, WALL_SQUARE } from '../components/Grid/Square/SquareType';
 
 const bfs = (ROW_SIZE, COL_SIZE) => {
 	let counter = 0;

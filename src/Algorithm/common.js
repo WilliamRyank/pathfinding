@@ -1,14 +1,15 @@
 import $ from 'jquery';
 
-import { START_SQUARE, UNVISITED_SQUARE, VISITED_SQUARE } from '../Grid/Square/SquareType';
+import Node from '../Node/Node';
+import { START_SQUARE, UNVISITED_SQUARE, VISITED_SQUARE } from '../components/Grid/Square/SquareType';
 
-export const getStartSquare = () => {
-	const startSquare = $('.' + START_SQUARE);
-	
-	return {
-		row: Math.floor(startSquare.attr('id') / 40),
-		col: startSquare.attr('id') % 40
-	};
+export const getStartSquare = (COL_SIZE) => {
+  const startSquare = $('.' + START_SQUARE);
+  const row = Math.floor(startSquare.attr('id') / COL_SIZE);
+  const col = startSquare.attr('id') % COL_SIZE
+  const id = row * COL_SIZE + col;
+  
+  return new Node(row, col, id, null);
 };
 
 export const addVisited = (id, counter) => {

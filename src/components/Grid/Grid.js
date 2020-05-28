@@ -3,9 +3,9 @@ import $ from 'jquery';
 
 import Square from './Square/Square';
 import { initializeGrid } from './Helper';
-import { UNVISITED_SQUARE, VISITED_SQUARE, START_SQUARE } from './Square/SquareType';
-import dfs from '../Algorithm/DFS';
-import bfs from '../Algorithm/BFS';
+import { UNVISITED_SQUARE, VISITED_SQUARE, START_SQUARE, PATH_SQUARE } from './Square/SquareType';
+import dfs from '../../Algorithm/DFS';
+import bfs from '../../Algorithm/BFS';
 
 
 const START_ROW = 7;
@@ -27,11 +27,13 @@ class Grid extends Component {
 			specialType: '', //Moving starting/target square
 			specialRow: 0,
 			specialCol: 0,
-			prevVisited: []
+      prevVisited: [],
+      prevPath: []
 		}
 	}
 
 	onMouseDown = () => {
+		this.resetGrid();
 		this.setState({
 			isMouseClicked: true
 		});
@@ -79,25 +81,27 @@ class Grid extends Component {
 			isAllowEdit: false,
 		});
 
-		const [delayAnimation, visited] =  bfs(ROW_SIZE, COL_SIZE);
+		const [delayAnimation, visited, path] =  dfs(ROW_SIZE, COL_SIZE);
 
 		setTimeout(() => {
 			this.setState({
 				isAllowEdit: true,
-				prevVisited: visited
+        prevVisited: visited,
+        prevPath: path
 			});
 		}, delayAnimation);
-		// console.log($('.' + START_SQUARE))
-		// $('.' + START_SQUARE).removeClass();
 	}
 
 	resetGrid = () => {
-		const startSquare = $('.' + START_SQUARE);
-		startSquare.removeClass();
-		startSquare.addClass(START_SQUARE);
-		for (const square of this.state.prevVisited) {
-			$('#' + square).removeClass(VISITED_SQUARE);
-		}
+    const startSquare = $('.' + START_SQUARE);
+    startSquare.removeClass();
+    startSquare.addClass(START_SQUARE);
+    for (const square of this.state.prevVisited) {
+      $('#' + square).removeClass(VISITED_SQUARE);
+    }
+    for (const square of this.state.prevPath) {
+      $('#' + square.getId()).removeClass(PATH_SQUARE);
+    }
 	}
 
 	render() {

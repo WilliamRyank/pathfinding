@@ -41,6 +41,12 @@ td {
   animation: visitedAnimation 1s ease-out;
 }
 
+.path {
+  background-color: yellow;
+  animation-delay: 0s;
+  animation: startAnimation 0.2s ease-out;
+}
+
 .goal {
   background-color: red;
   animation: startAnimation 0.5s ease-out;
