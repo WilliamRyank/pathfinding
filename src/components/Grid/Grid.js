@@ -81,7 +81,7 @@ class Grid extends Component {
 			isAllowEdit: false,
 		});
 
-		const [delayAnimation, visited, path] =  dfs(ROW_SIZE, COL_SIZE);
+		const [delayAnimation, visited, path] =  bfs(ROW_SIZE, COL_SIZE);
 
 		setTimeout(() => {
 			this.setState({

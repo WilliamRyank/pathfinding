@@ -38,7 +38,7 @@ const dfs = (ROW_SIZE, COL_SIZE) => {
           $('#' + id).addClass(PATH_SQUARE);
         }, Math.floor(counter / 10) * 50 + i * 20);
       });
-
+      
 			break;
 		}
     
