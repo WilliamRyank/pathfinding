@@ -3,19 +3,29 @@ import $ from 'jquery';
 
 import Square from './Square/Square';
 import { initializeGrid } from './Helper';
-import { UNVISITED_SQUARE, WALL_SQUARE } from './Square/SquareType';
+import { UNVISITED_SQUARE, VISITED_SQUARE, START_SQUARE } from './Square/SquareType';
+import dfs from '../Algorithm/DFS';
+
+const START_ROW = 7;
+const START_COL = 10;
+const GOAL_ROW = 7;
+const GOAL_COL = 30;
+const ROW_SIZE = 14;
+const COL_SIZE = 40
 
 class Grid extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			grid: initializeGrid(7, 10, 7, 30, 14, 40),
+			grid: initializeGrid(START_ROW, START_COL, GOAL_ROW, GOAL_COL, ROW_SIZE, COL_SIZE),
+			isAllowEdit: true,
 			isMouseClicked: false,
 			isSpecialClicked: false,
 			specialType: '', //Moving starting/target square
 			specialRow: 0,
-			specialCol: 0
+			specialCol: 0,
+			prevVisited: []
 		}
 	}
 
@@ -45,111 +55,79 @@ class Grid extends Component {
 	}
 
 	moveSpecial = (row, col) => { // Logic when moving special squares 
-		let id = this.state.specialRow * 40 + this.state.specialCol;
-		$('#' + id).removeClass(this.state.specialType);
-		if (!$('#' + id).attr('class')) {
-			$('#' + id).addClass(UNVISITED_SQUARE);
+		let id = this.getId(this.state.specialRow, this.state.specialCol);
+		let elRef = $('#' + id);
+
+		elRef.removeClass(this.state.specialType);
+		if (!elRef.attr('class')) {
+			elRef.addClass(UNVISITED_SQUARE);
 		}
+		
 		this.setState({
 			specialRow: row,
 			specialCol: col
 		});
 	}
 
+	getId = (row, col) => row * COL_SIZE + col;
+
 	visualize = () => {
+		this.resetGrid();
+		this.setState({
+			isAllowEdit: false,
+		});
 
-		let grid = this.state.grid;
-		let counter = 0;
-		console.log(grid);
-		const queue = [];
-		const visited = [];
-		queue.push({
-			row: Math.floor($('.start').attr('id') / 40),
-			col: $('.start').attr('id') % 40
-		})
+		const [delayAnimation, visited] = dfs(ROW_SIZE, COL_SIZE);
 
-		while (queue.length !== 0) {
-			let temp = queue.pop();
-			let row = temp.row;
-			let col = temp.col;
-			let id = row * 40 + col;
-			counter++;
-
-			if ($('#' + id).attr('class') === 'goal') {
-				break;
-			}
-
-			this.add(id ,counter);
-			console.log(row, col);
-
-			visited.push(id);
-
-			let n1 = {};
-			let n2 = {};
-			let n3 = {};
-			let n4 = {};
-			const neighbour = [];
-
-			n1['row'] = row + 1;
-			n1['col'] = col;
-			n2['row'] = row - 1;
-			n2['col'] = col;
-			n3['row'] = row;
-			n3['col'] = col + 1;
-			n4['row'] = row;
-			n4['col'] = col - 1;
-
-			neighbour.push(n2);
-			neighbour.push(n4);
-			neighbour.push(n1);
-			neighbour.push(n3);
-
-			for (let n of neighbour) {
-				let id = n.row * 40 + n.col;
-				if (visited.includes(id) || ($('#' + id).attr('class') === WALL_SQUARE) || (n.row < 0 || n.row > 13 || n.col < 0 || n.col > 39)) {
-					continue;
-				}
-				else {
-					queue.push(n);
-				}
-			}
-
-		}
-
-		
+		setTimeout(() => {
+			this.setState({
+				isAllowEdit: true,
+				prevVisited: visited
+			});
+		}, delayAnimation);
+		// console.log($('.' + START_SQUARE))
+		// $('.' + START_SQUARE).removeClass();
 	}
 
-	add = (id, counter) => {
-		setTimeout(function(){$('#' + id).addClass('visited'); console.log(id)}, counter * 20);
-	};
+	resetGrid = () => {
+		const startSquare = $('.' + START_SQUARE);
+		startSquare.removeClass();
+		startSquare.addClass(START_SQUARE);
+		for (const square of this.state.prevVisited) {
+			$('#' + square).removeClass(VISITED_SQUARE);
+		}
+	}
 
 	render() {
 		return (
 			<div>
-				<button onClick={this.visualize}>Visualize</button>
-				<table onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}>
-				<tbody>
-				{
-					this.state.grid.map((row, rowIdx) => {
-						return (
-							<tr key={rowIdx}>
-								{row.map((square, colIdx) => {
-									return <Square 
-														row={rowIdx}
-														col={colIdx}
-														key={(rowIdx % 40)*40 + colIdx} 
-														id={(rowIdx % 40)*40 + colIdx} 
-														isMouseClicked={this.state.isMouseClicked}
-														isSpecialClicked={this.state.isSpecialClicked}
-														specialType={this.state.specialType}	
-														selectSpecial={this.selectSpecial}
-														moveSpecial={this.moveSpecial}  
-														grid={this.state.grid} />
-								})}
-							</tr>
-						)})
-				}
-				</tbody>
+				<button onClick={this.visualize} disabled={!this.state.isAllowEdit}>Visualize</button>
+				<table 
+					onMouseDown={this.state.isAllowEdit ? this.onMouseDown: null} 
+					onMouseUp={this.state.isAllowEdit ? this.onMouseUp: null}>
+					<tbody>
+					{
+						this.state.grid.map((row, rowIdx) => {
+							return (
+								<tr key={rowIdx}>
+									{row.map((square, colIdx) => {
+										return <Square 
+															row={rowIdx}
+															col={colIdx}
+															key={(rowIdx % 40)*40 + colIdx} 
+															id={(rowIdx % 40)*40 + colIdx} 
+															isMouseClicked={this.state.isMouseClicked}
+															isSpecialClicked={this.state.isSpecialClicked}
+															isAllowEdit={this.state.isAllowEdit}
+															specialType={this.state.specialType}	
+															selectSpecial={this.selectSpecial}
+															moveSpecial={this.moveSpecial}  
+															grid={this.state.grid} />
+									})}
+								</tr>
+							)})
+					}
+					</tbody>
 				</table>
 			</div>
 		)
