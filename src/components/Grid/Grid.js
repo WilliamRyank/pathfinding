@@ -7,14 +7,15 @@ import { initializeGrid } from './Helper';
 import { UNVISITED_SQUARE, VISITED_SQUARE, START_SQUARE, PATH_SQUARE } from './Square/SquareType';
 import dfs from '../../Algorithm/DFS';
 import bfs from '../../Algorithm/BFS';
-import { BFS, DFS } from '../../Algorithm/AlgoType';
+import { BFS, DFS, ASTAR } from '../../Algorithm/AlgoType';
+import Astar from '../../Algorithm/Astar';
 
 
-const START_ROW = 6;
+const START_ROW = 5;
 const START_COL = 10;
-const GOAL_ROW = 6;
+const GOAL_ROW = 5;
 const GOAL_COL = 30;
-const ROW_SIZE = 12;
+const ROW_SIZE = 11;
 const COL_SIZE = 40;
 
 class Grid extends Component {
@@ -86,10 +87,14 @@ class Grid extends Component {
     let [delayAnimation, visited, path] = [null, null, null];
     
     switch(this.props.algo) {
+      case ASTAR:
+        [delayAnimation, visited, path] =  Astar(ROW_SIZE, COL_SIZE);
+        break;
+      
       case BFS:
         [delayAnimation, visited, path] =  bfs(ROW_SIZE, COL_SIZE);
         break;
-      
+
       case DFS:
         [delayAnimation, visited, path] =  dfs(ROW_SIZE, COL_SIZE);
         break;
@@ -127,12 +132,14 @@ class Grid extends Component {
     }
 		return (
 			<div>
-        <div style={style}>
+        <div style={style} hidden={!this.props.algo}>
+          Algorithm picked: <b>{this.props.algo}</b>
           <Button 
             disabled={!this.state.isAllowEdit}
             hidden={!this.props.algo} 
-            variant="success" 
-            onClick={this.visualize}>Visualize {this.props.algo}!
+            variant="primary" 
+            onClick={this.visualize}
+            style={{marginLeft: '20px', lineHeight: '1.25'}}>Visualize!
           </Button>
         </div>
         <div style={style} hidden={this.props.algo}>

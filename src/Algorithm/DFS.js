@@ -36,7 +36,7 @@ const dfs = (ROW_SIZE, COL_SIZE) => {
         const id = node.getRow() * COL_SIZE + node.getCol();
         setTimeout(() => {
           $('#' + id).addClass(PATH_SQUARE);
-        }, Math.floor(counter / 10) * 50 + i * 20);
+        }, Math.floor(counter / 10) * 100 + i * 50);
       });
       
 			break;
@@ -63,12 +63,12 @@ const dfs = (ROW_SIZE, COL_SIZE) => {
 				continue;
 			}
 			else {
-        const newNode = new Node(curr.row, curr.col, currId, currNode);
+        const newNode = new Node(curr.row, curr.col, currId, currNode, 0, 0);
 				stack.push(newNode);
 			}
 		}
 	}
-	return [Math.floor(counter / 10) * 50 + path.length * 20, visited, path];
+	return [Math.floor(counter / 10) * 100 + path.length * 50, visited, path];
 };
 
 export default dfs;

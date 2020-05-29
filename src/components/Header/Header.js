@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Navbar, NavDropdown, Nav } from 'react-bootstrap';
-import { BFS, DFS } from '../../Algorithm/AlgoType';
+import { BFS, DFS, ASTAR } from '../../Algorithm/AlgoType';
 
 const Header = (props) => {
   return (
@@ -9,8 +9,9 @@ const Header = (props) => {
       <Navbar.Brand href=".">Pathfinding Visualizer</Navbar.Brand>
         <Nav className="mr-auto">
           <NavDropdown title={'Algorithm'} id="collasible-nav-dropdown">
-            <NavDropdown.Item onSelect={() => props.onSelectAlgo(DFS)}>DFS</NavDropdown.Item>
-            <NavDropdown.Item onSelect={() => props.onSelectAlgo(BFS)}>BFS</NavDropdown.Item>
+            <NavDropdown.Item onSelect={() => props.onSelectAlgo(ASTAR)}>{ASTAR}</NavDropdown.Item>
+            <NavDropdown.Item onSelect={() => props.onSelectAlgo(BFS)}>{BFS}</NavDropdown.Item>
+            <NavDropdown.Item onSelect={() => props.onSelectAlgo(DFS)}>{DFS}</NavDropdown.Item>
           </NavDropdown>
         </Nav>
     </Navbar>
