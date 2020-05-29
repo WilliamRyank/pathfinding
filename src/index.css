@@ -54,7 +54,8 @@ td {
 
 li {
   display: inline-block;
-  margin: 10px;
+  margin: 15px;
+  margin-bottom: 10px;
   font-weight: 600;
 }
 

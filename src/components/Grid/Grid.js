@@ -129,6 +129,7 @@ class Grid extends Component {
 			<div>
         <div style={style}>
           <Button 
+            disabled={!this.state.isAllowEdit}
             hidden={!this.props.algo} 
             variant="success" 
             onClick={this.visualize}>Visualize {this.props.algo}!
