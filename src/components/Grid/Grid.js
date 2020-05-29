@@ -10,12 +10,12 @@ import bfs from '../../Algorithm/BFS';
 import { BFS, DFS } from '../../Algorithm/AlgoType';
 
 
-const START_ROW = 7;
+const START_ROW = 6;
 const START_COL = 10;
-const GOAL_ROW = 7;
+const GOAL_ROW = 6;
 const GOAL_COL = 30;
-const ROW_SIZE = 14;
-const COL_SIZE = 40
+const ROW_SIZE = 12;
+const COL_SIZE = 40;
 
 class Grid extends Component {
 	constructor(props) {
@@ -134,6 +134,10 @@ class Grid extends Component {
             onClick={this.visualize}>Visualize {this.props.algo}!
           </Button>
         </div>
+        <div style={style} hidden={this.props.algo}>
+          Pick an algorithm and visualize it!
+        </div>
+
 				<table 
 					onMouseDown={this.state.isAllowEdit ? this.onMouseDown: null} 
 					onMouseUp={this.state.isAllowEdit ? this.onMouseUp: null}>
@@ -146,8 +150,8 @@ class Grid extends Component {
 										return <Square 
 															row={rowIdx}
 															col={colIdx}
-															key={(rowIdx % 40)*40 + colIdx} 
-															id={(rowIdx % 40)*40 + colIdx} 
+															key={(rowIdx % COL_SIZE)*COL_SIZE + colIdx} 
+															id={(rowIdx % COL_SIZE)*COL_SIZE + colIdx} 
 															isMouseClicked={this.state.isMouseClicked}
 															isSpecialClicked={this.state.isSpecialClicked}
 															isAllowEdit={this.state.isAllowEdit}

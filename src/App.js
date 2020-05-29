@@ -1,6 +1,7 @@
 import React, { Component }from 'react';
 import './App.css';
 import Grid from './components/Grid/Grid';
+import Info from './components/Info/Info';
 import Header from './components/Header/Header';
 
 class App extends Component {
@@ -22,6 +23,7 @@ class App extends Component {
     return (
       <div>
         <Header algo={this.state.algo} onSelectAlgo={this.onSelectAlgo}></Header>
+        <Info></Info>
         <Grid algo={this.state.algo}></Grid>
       </div>
     );

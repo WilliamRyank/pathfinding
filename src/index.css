@@ -52,6 +52,41 @@ td {
   animation: startAnimation 0.5s ease-out;
 }
 
+li {
+  display: inline-block;
+  margin: 10px;
+  font-weight: 600;
+}
+
+.info {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+  top: 5px;
+  display: inline-block;
+}
+
+#startNode {
+  background-color: royalblue;
+}
+
+#goalNode {
+  background-color: red;
+}
+
+#visitedNode {
+  background-color: rgba(129, 207, 224, 1);
+}
+
+#pathNode {
+  background-color: yellow;
+}
+
+#wallNode {
+  background-color: rgb(12, 53, 71);
+}
+
 @keyframes startAnimation {
   0% {
     transform: scale(.3);
