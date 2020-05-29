@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
 import $ from 'jquery';
 
 import Square from './Square/Square';
@@ -6,6 +7,7 @@ import { initializeGrid } from './Helper';
 import { UNVISITED_SQUARE, VISITED_SQUARE, START_SQUARE, PATH_SQUARE } from './Square/SquareType';
 import dfs from '../../Algorithm/DFS';
 import bfs from '../../Algorithm/BFS';
+import { BFS, DFS } from '../../Algorithm/AlgoType';
 
 
 const START_ROW = 7;
@@ -26,7 +28,7 @@ class Grid extends Component {
 			isSpecialClicked: false,
 			specialType: '', //Moving starting/target square
 			specialRow: 0,
-			specialCol: 0,
+      specialCol: 0,
       prevVisited: [],
       prevPath: []
 		}
@@ -79,9 +81,22 @@ class Grid extends Component {
 		this.resetGrid();
 		this.setState({
 			isAllowEdit: false,
-		});
+    });
 
-		const [delayAnimation, visited, path] =  bfs(ROW_SIZE, COL_SIZE);
+    let [delayAnimation, visited, path] = [null, null, null];
+    
+    switch(this.props.algo) {
+      case BFS:
+        [delayAnimation, visited, path] =  bfs(ROW_SIZE, COL_SIZE);
+        break;
+      
+      case DFS:
+        [delayAnimation, visited, path] =  dfs(ROW_SIZE, COL_SIZE);
+        break;
+      
+      default:
+    }
+
 
 		setTimeout(() => {
 			this.setState({
@@ -105,9 +120,20 @@ class Grid extends Component {
 	}
 
 	render() {
+    const style = {
+      textAlign: 'center',
+      marginTop: '20px',
+      width: '100%'
+    }
 		return (
 			<div>
-				<button onClick={this.visualize} disabled={!this.state.isAllowEdit}>Visualize</button>
+        <div style={style}>
+          <Button 
+            hidden={!this.props.algo} 
+            variant="success" 
+            onClick={this.visualize}>Visualize {this.props.algo}!
+          </Button>
+        </div>
 				<table 
 					onMouseDown={this.state.isAllowEdit ? this.onMouseDown: null} 
 					onMouseUp={this.state.isAllowEdit ? this.onMouseUp: null}>

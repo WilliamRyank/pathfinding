@@ -34,6 +34,7 @@ const bfs = (ROW_SIZE, COL_SIZE) => {
       temp.forEach((node, i) => {
         const id = node.getRow() * COL_SIZE + node.getCol();
         setTimeout(() => {
+          $('#' + id).removeClass();
           $('#' + id).addClass(PATH_SQUARE);
         }, Math.floor(counter / 10) * 50 + i * 20);
       });
