@@ -66,6 +66,7 @@ li {
   margin-right: 10px;
   top: 5px;
   display: inline-block;
+  border: 1px solid rgb(147, 169, 238);
 }
 
 #startNode {
@@ -74,6 +75,10 @@ li {
 
 #goalNode {
   background-color: red;
+}
+
+#unvisitedNode {
+  background-color: white;
 }
 
 #visitedNode {

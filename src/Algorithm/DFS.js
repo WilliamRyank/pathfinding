@@ -32,19 +32,18 @@ const dfs = (ROW_SIZE, COL_SIZE) => {
 
       path = temp.slice();
 
+      let tempCount = counter;
       temp.forEach((node, i) => {
         const id = node.getRow() * COL_SIZE + node.getCol();
         setTimeout(() => {
           $('#' + id).addClass(PATH_SQUARE);
-        }, Math.floor(counter / 10) * 100 + i * 50);
+        }, Math.floor(tempCount / 10) * 100 + i * 50);
       });
       
 			break;
 		}
     
-    if (counter !== 1) {
-      addVisited(id ,counter); 
-    }
+    addVisited(id ,counter); 
 
 		visited.push(id);
 

@@ -14,7 +14,6 @@ const Astar = (ROW_SIZE, COL_SIZE) => {
 
 	while (pqueue.size() !== 0) {
     counter++; 
-    console.log(visited.sort());
     const currNode = pqueue.pop();
     
 		const row = currNode.getRow();
@@ -27,6 +26,7 @@ const Astar = (ROW_SIZE, COL_SIZE) => {
 
 		if ($('#' + id).attr('class') === GOAL_SQUARE) {
       let temp = [];
+      let tempCount = counter;
       let addNode = currNode.getParent();
 
       while (addNode !== null) {
@@ -42,15 +42,13 @@ const Astar = (ROW_SIZE, COL_SIZE) => {
         const id = node.getRow() * COL_SIZE + node.getCol();
         setTimeout(() => {
           $('#' + id).addClass(PATH_SQUARE);
-        }, Math.floor(counter / 10) * 100 + i * 50);
+        }, Math.floor(tempCount / 10) * 100 + i * 50);
       });
       
 			break;
 		}
     
-    if (counter !== 1) {
-      addVisited(id ,counter); 
-    }
+    addVisited(id ,counter); 
 
 		visited.push(id);
 
@@ -69,9 +67,6 @@ const Astar = (ROW_SIZE, COL_SIZE) => {
 				continue;
 			}
 			else {
-        if (currId === 132) {
-          console.log(curr)
-        }
         const heuristicCost = Math.abs(curr.row - goalRow) + Math.abs(curr.col - goalCol);
         const newNode = new Node(curr.row, curr.col, currId, currNode, currNode.getActualCost() + 1, heuristicCost);
         pqueue.push(newNode);

@@ -4,11 +4,13 @@ import $ from 'jquery';
 
 import Square from './Square/Square';
 import { initializeGrid } from './Helper';
-import { UNVISITED_SQUARE, VISITED_SQUARE, START_SQUARE, PATH_SQUARE } from './Square/SquareType';
+import { UNVISITED_SQUARE, VISITED_SQUARE, START_SQUARE, PATH_SQUARE, GOAL_SQUARE } from './Square/SquareType';
 import dfs from '../../Algorithm/DFS';
 import bfs from '../../Algorithm/BFS';
-import { BFS, DFS, ASTAR } from '../../Algorithm/AlgoType';
+import { BFS, DFS, ASTAR, GREEDY, BIDIRECTIONAL } from '../../Algorithm/AlgoType';
 import Astar from '../../Algorithm/Astar';
+import greedyBFS from '../../Algorithm/GreedyBFS';
+import biDirectional from '../../Algorithm/BiDirectional';
 
 
 const START_ROW = 5;
@@ -87,20 +89,28 @@ class Grid extends Component {
     let [delayAnimation, visited, path] = [null, null, null];
     
     switch(this.props.algo) {
-      case ASTAR:
-        [delayAnimation, visited, path] =  Astar(ROW_SIZE, COL_SIZE);
-        break;
+		case ASTAR:
+			[delayAnimation, visited, path] =  Astar(ROW_SIZE, COL_SIZE);
+			break;
+		
+		case GREEDY:
+			[delayAnimation, visited, path] =  greedyBFS(ROW_SIZE, COL_SIZE);
+      break;
       
-      case BFS:
-        [delayAnimation, visited, path] =  bfs(ROW_SIZE, COL_SIZE);
-        break;
+    case BIDIRECTIONAL:
+      [delayAnimation, visited, path] =  biDirectional(ROW_SIZE, COL_SIZE);
+      break;
+      
+		case BFS:
+			[delayAnimation, visited, path] =  bfs(ROW_SIZE, COL_SIZE);
+			break;
 
-      case DFS:
-        [delayAnimation, visited, path] =  dfs(ROW_SIZE, COL_SIZE);
-        break;
+		case DFS:
+			[delayAnimation, visited, path] =  dfs(ROW_SIZE, COL_SIZE);
+			break;
       
-      default:
-    }
+		default:
+	}
 
 
 		setTimeout(() => {
@@ -114,10 +124,20 @@ class Grid extends Component {
 
 	resetGrid = () => {
     const startSquare = $('.' + START_SQUARE);
+    const goalSquare = $('.' + GOAL_SQUARE);
+
     startSquare.removeClass();
+    goalSquare.removeClass();
+
     startSquare.addClass(START_SQUARE);
+    goalSquare.addClass(GOAL_SQUARE);
+
+
     for (const square of this.state.prevVisited) {
       $('#' + square).removeClass(VISITED_SQUARE);
+      if ($('#' + square).attr('class') === "") {
+        $('#' + square).addClass(UNVISITED_SQUARE);
+      }
     }
     for (const square of this.state.prevPath) {
       $('#' + square.getId()).removeClass(PATH_SQUARE);

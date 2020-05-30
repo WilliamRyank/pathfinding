@@ -12,6 +12,15 @@ export const getStartSquare = (COL_SIZE) => {
   return new Node(row, col, id, null, 0, 0);
 };
 
+export const getGoalSquare = (COL_SIZE) => {
+  const goalSquare = $('.' + GOAL_SQUARE);
+  const row = Math.floor(goalSquare.attr('id') / COL_SIZE);
+  const col = goalSquare.attr('id') % COL_SIZE
+  const id = row * COL_SIZE + col;
+  
+  return new Node(row, col, id, null, 0, 0);
+};
+
 export const getGoalPosition = (COL_SIZE) => {
   const startSquare = $('.' + GOAL_SQUARE);
   const row = Math.floor(startSquare.attr('id') / COL_SIZE);
@@ -22,8 +31,11 @@ export const getGoalPosition = (COL_SIZE) => {
 
 export const addVisited = (id, counter) => {
 	setTimeout(() => {
-		$('#' + id).removeClass(UNVISITED_SQUARE);
-		$('#' + id).addClass(VISITED_SQUARE);
+    $('#' + id).removeClass(UNVISITED_SQUARE);
+    
+    if ($('#' + id).attr('class') === "") {
+      $('#' + id).addClass(VISITED_SQUARE);
+    }
 	}, Math.floor(counter / 10) * 100);
 };
 

@@ -12,6 +12,10 @@ const Info = () => {
         Goal Node
       </li>
       <li>
+        <div id="unvisitedNode" className="info"/>
+        Unvisited Node
+      </li>
+      <li>
         <div id="visitedNode" className="info"/>
         Visited Node
       </li>

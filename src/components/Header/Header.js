@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Navbar, NavDropdown, Nav } from 'react-bootstrap';
-import { BFS, DFS, ASTAR } from '../../Algorithm/AlgoType';
+import { BFS, DFS, ASTAR, GREEDY, BIDIRECTIONAL } from '../../Algorithm/AlgoType';
 
 const Header = (props) => {
   return (
@@ -10,6 +10,8 @@ const Header = (props) => {
         <Nav className="mr-auto">
           <NavDropdown title={'Algorithm'} id="collasible-nav-dropdown">
             <NavDropdown.Item onSelect={() => props.onSelectAlgo(ASTAR)}>{ASTAR}</NavDropdown.Item>
+            <NavDropdown.Item onSelect={() => props.onSelectAlgo(GREEDY)}>{GREEDY}</NavDropdown.Item>
+            <NavDropdown.Item onSelect={() => props.onSelectAlgo(BIDIRECTIONAL)}>{BIDIRECTIONAL}</NavDropdown.Item>
             <NavDropdown.Item onSelect={() => props.onSelectAlgo(BFS)}>{BFS}</NavDropdown.Item>
             <NavDropdown.Item onSelect={() => props.onSelectAlgo(DFS)}>{DFS}</NavDropdown.Item>
           </NavDropdown>

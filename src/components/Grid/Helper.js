@@ -1,4 +1,4 @@
-import { VISITED_SQUARE, UNVISITED_SQUARE, START_SQUARE, GOAL_SQUARE } from './Square/SquareType';
+import { UNVISITED_SQUARE, START_SQUARE, GOAL_SQUARE } from './Square/SquareType';
 
 export const initializeGrid = (startRow, startCol, goalRow, goalCol, rowSize, colSize) => {
 
