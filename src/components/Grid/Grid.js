@@ -13,11 +13,11 @@ import greedyBFS from '../../Algorithm/GreedyBFS';
 import biDirectional from '../../Algorithm/BiDirectional';
 
 
-const START_ROW = 5;
+const START_ROW = 6;
 const START_COL = 10;
-const GOAL_ROW = 5;
+const GOAL_ROW = 6;
 const GOAL_COL = 30;
-const ROW_SIZE = 11;
+const ROW_SIZE = 13;
 const COL_SIZE = 40;
 
 class Grid extends Component {
